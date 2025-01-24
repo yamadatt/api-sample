@@ -1,5 +1,14 @@
-# api-sample
-golangのAPIサンプル
+# このリポジトリは？
+
+golangのAPIサンプル。
+
+簡単なAPIをサンプル的ほしいというリクエストに対応するために作った。
+
+在庫を登録して、売上を上げる。売上を上げる際には、在庫から引き当てる。というような処理を実装している。
+
+後半に使い方のサンプルコマンドを載せている。
+
+
 
 ## API Documentation
 
@@ -122,26 +131,39 @@ golangのAPIサンプル
 }
 ```
 
-## example
+## 使用例
 
-登録
+### 登録
 
+```bash
 curl -v -d '{"name": "product1","amount": 100}' -H 'Content-Type: application/json' http://192.168.1.78:8080/v1/stocks
+```
 
-在庫チェック
+### 在庫チェック
 
+```bash
 curl http://192.168.1.78:8080/v1/stocks/product1
+```
+### 売り上げる
 
-売り上げる
+#### 単価なし
 
-単価なし
-
+```bash
 curl -v -d '{"name": "product1","amount": 4}' -H 'Content-Type: application/json' http://192.168.1.78:8080/v1/sales
+```
+#### 単価あり
 
-単価あり
-
+```bash
 curl -v -d '{"name": "product1","amount": 4,"price": 2000}' -H 'Content-Type: application/json' http://192.168.1.78:8080/v1/sales
+```
+### 売上チェック
 
-売上チェック
-
+```bash
 curl http://192.168.1.78:8080/v1/sales
+```
+
+### 削除
+
+```bash
+curl -X DELETE http://192.168.1.78:8080/v1/stocks
+```
