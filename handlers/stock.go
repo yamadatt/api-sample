@@ -28,10 +28,6 @@ func RegisterStockHandler(w http.ResponseWriter, r *http.Request) {
 		stock.Amount = 1
 	}
 
-	fmt.Println("debug:Registering stock:", stock)
-
-	//dbのオープンとクローズをここで行う
-
 	db, err := database.InitDB("mydb.db")
 	if err != nil {
 		log.Fatal(err)
