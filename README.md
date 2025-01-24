@@ -75,7 +75,37 @@ golangのAPIサンプル
 ]
 ```
 
+### Register Sales
 
+#### Endpoint
+- **HTTP Method:** POST
+- **Request URI:** /v1/sales
+
+#### Request Parameters
+- **name (required):** The name of the product
+- **amount (optional):** The quantity of the product to sell (positive integer). Default is 1.
+- **price (optional):** The price of the product (positive number). If provided, the total price (price * amount) will be added to the sales total.
+
+#### Example Request
+```json
+{
+  "name": "Product A",
+  "amount": 2,
+  "price": 50.0
+}
+```
+
+#### Example Response
+- **HTTP Status Code:** 200 OK
+- **Response Body:**
+```json
+{
+  "message": "Sale registered successfully",
+  "product": "Product A",
+  "amount": 2,
+  "totalPrice": 100.0
+}
+```
 
 ## example
 

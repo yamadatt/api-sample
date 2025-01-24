@@ -36,7 +36,20 @@ func InitDB(dataSourceName string) error {
 		return fmt.Errorf("failed to create table: %v", err)
 	}
 
-	fmt.Println("debug:stocks exist", dataSourceName)
+	query = `
+	CREATE TABLE IF NOT EXISTS sales (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		name TEXT NOT NULL,
+		amount INTEGER NOT NULL,
+		total_price REAL NOT NULL
+	)`
+
+	_, err = db.Exec(query)
+	if err != nil {
+		return fmt.Errorf("failed to create table: %v", err)
+	}
+
+	fmt.Println("debug:stocks and sales exist", dataSourceName)
 
 	return nil
 }
