@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"testing"
 
 	"github.com/gorilla/mux"
@@ -61,14 +62,14 @@ func TestRegisterStockHandler_InvalidName(t *testing.T) {
 }
 
 func TestRegisterStockHandler_InvalidAmount(t *testing.T) {
-	invalidAmounts := []int{-10, 0}
+	invalidAmounts := []interface{}{-10, 0, 10.5}
 
 	for _, amount := range invalidAmounts {
-		reqBody := []byte(`{"name": "Product A", "amount": ` + strconv.Itoa(amount) + `}`)
+		reqBody := []byte(`{"name": "Product A", "amount": ` + strconv.FormatFloat(amount.(float64), 'f', -1, 64) + `}`)
 		req, err := http.NewRequest("POST", "/v1/stocks", bytes.NewBuffer(reqBody))
 		if err != nil {
 			t.Fatal(err)
-		}
+			}
 		rr := httptest.NewRecorder()
 		handler := http.HandlerFunc(handlers.RegisterStockHandler)
 		handler.ServeHTTP(rr, req)
@@ -157,10 +158,10 @@ func TestRegisterSalesHandler_InvalidName(t *testing.T) {
 }
 
 func TestRegisterSalesHandler_InvalidAmount(t *testing.T) {
-	invalidAmounts := []int{-2, 0}
+	invalidAmounts := []interface{}{-2, 0, 2.5}
 
 	for _, amount := range invalidAmounts {
-		reqBody := []byte(`{"name": "Product A", "amount": ` + strconv.Itoa(amount) + `, "price": 50.0}`)
+		reqBody := []byte(`{"name": "Product A", "amount": ` + strconv.FormatFloat(amount.(float64), 'f', -1, 64) + `, "price": 50.0}`)
 		req, err := http.NewRequest("POST", "/v1/sales", bytes.NewBuffer(reqBody))
 		if err != nil {
 			t.Fatal(err)

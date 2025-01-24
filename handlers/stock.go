@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"regexp"
+	"strconv"
 
 	"github.com/gorilla/mux"
 )
@@ -33,6 +34,12 @@ func RegisterStockHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if stock.Amount <= 0 {
+		http.Error(w, `{"message": "ERROR"}`, http.StatusBadRequest)
+		return
+	}
+
+	// Check if amount is a decimal value
+	if _, err := strconv.ParseFloat(fmt.Sprintf("%d", stock.Amount), 64); err != nil {
 		http.Error(w, `{"message": "ERROR"}`, http.StatusBadRequest)
 		return
 	}
