@@ -74,3 +74,15 @@ golangのAPIサンプル
   }
 ]
 ```
+
+
+
+## example
+
+登録
+
+curl -v -d '{"name": "product1","amount": 100}' -H 'Content-Type: application/json' http://192.168.1.78:8080/v1/stocks
+
+在庫チェック
+
+curl http://192.168.1.78:8080/v1/stocks/product1

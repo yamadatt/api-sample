@@ -7,6 +7,12 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+// Stock represents a stock item in the database
+type Stock struct {
+	Name   string
+	Amount int
+}
+
 var db *sql.DB
 
 func InitDB(dataSourceName string) error {
@@ -21,9 +27,10 @@ func InitDB(dataSourceName string) error {
 	query := `
 	CREATE TABLE IF NOT EXISTS stocks (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		name TEXT NOT NULL,
+		name TEXT NOT NULL UNIQUE,
 		amount INTEGER NOT NULL
 	)`
+
 	_, err = db.Exec(query)
 	if err != nil {
 		return fmt.Errorf("failed to create table: %v", err)
