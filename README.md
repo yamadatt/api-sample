@@ -107,6 +107,30 @@ golangのAPIサンプル
 }
 ```
 
+### Check Sales
+
+#### Endpoint
+- **HTTP Method:** GET
+- **Request URI:** /v1/sales
+
+#### Example Response
+- **HTTP Status Code:** 200 OK
+- **Response Body:**
+```json
+[
+  {
+    "name": "Product A",
+    "amount": 2,
+    "total_price": 100.0
+  },
+  {
+    "name": "Product B",
+    "amount": 1,
+    "total_price": 50.0
+  }
+]
+```
+
 ## example
 
 登録
