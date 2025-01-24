@@ -29,7 +29,7 @@ func RegisterSalesHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Validate name field
-	isValidName := regexp.MustCompile(`^[a-zA-Z0-9]{1,8}$`).MatchString
+	isValidName := regexp.MustCompile(`^[a-z]{1,8}$`).MatchString
 	if !isValidName(sale.Name) {
 		http.Error(w, `{"message": "ERROR"}`, http.StatusBadRequest)
 		return
