@@ -43,3 +43,40 @@ func InsertStock(name string, amount int) error {
 
 	return nil
 }
+
+func GetStockByName(name string) (*Stock, error) {
+	query := `SELECT name, amount FROM stocks WHERE name = ?`
+	row := db.QueryRow(query, name)
+
+	var stock Stock
+	err := row.Scan(&stock.Name, &stock.Amount)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("no stock found for product: %s", name)
+		}
+		return nil, fmt.Errorf("failed to retrieve stock: %v", err)
+	}
+
+	return &stock, nil
+}
+
+func GetAllStocks() ([]Stock, error) {
+	query := `SELECT name, amount FROM stocks ORDER BY name ASC`
+	rows, err := db.Query(query)
+	if err != nil {
+		return nil, fmt.Errorf("failed to retrieve stocks: %v", err)
+	}
+	defer rows.Close()
+
+	var stocks []Stock
+	for rows.Next() {
+		var stock Stock
+		err := rows.Scan(&stock.Name, &stock.Amount)
+		if err != nil {
+			return nil, fmt.Errorf("failed to scan stock: %v", err)
+		}
+		stocks = append(stocks, stock)
+	}
+
+	return stocks, nil
+}

@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func RegisterStockHandler(w http.ResponseWriter, r *http.Request) {
@@ -48,4 +50,30 @@ func RegisterStockHandler(w http.ResponseWriter, r *http.Request) {
 		"message": "Stock registered successfully",
 		"product": stock,
 	})
+}
+
+func GetStockHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	name := vars["name"]
+
+	err := database.InitDB("mydb.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if name != "" {
+		stock, err := database.GetStockByName(name)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		json.NewEncoder(w).Encode(stock)
+	} else {
+		stocks, err := database.GetAllStocks()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		json.NewEncoder(w).Encode(stocks)
+	}
 }

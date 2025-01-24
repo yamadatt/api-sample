@@ -10,5 +10,7 @@ import (
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/v1/stocks", handlers.RegisterStockHandler).Methods("POST")
+	r.HandleFunc("/v1/stocks", handlers.GetStockHandler).Methods("GET")
+	r.HandleFunc("/v1/stocks/{name}", handlers.GetStockHandler).Methods("GET")
 	http.ListenAndServe(":8080", r)
 }

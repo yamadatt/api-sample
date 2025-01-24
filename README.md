@@ -33,3 +33,44 @@ golangのAPIサンプル
   }
 }
 ```
+
+### Check Stock
+
+#### Endpoint
+- **HTTP Method:** GET
+- **Request URI:** /v1/stocks(/:name)　（:nameは対象の商品の名前）
+
+#### Request Parameters
+- **name (optional):** The name of the product to check the stock for. If not specified, returns all products sorted by name in ascending order.
+
+#### Example Request (with name)
+- **Request URI:** /v1/stocks/ProductA
+
+#### Example Response (with name)
+- **HTTP Status Code:** 200 OK
+- **Response Body:**
+```json
+{
+  "name": "Product A",
+  "amount": 10
+}
+```
+
+#### Example Request (without name)
+- **Request URI:** /v1/stocks
+
+#### Example Response (without name)
+- **HTTP Status Code:** 200 OK
+- **Response Body:**
+```json
+[
+  {
+    "name": "Product A",
+    "amount": 10
+  },
+  {
+    "name": "Product B",
+    "amount": 5
+  }
+]
+```
