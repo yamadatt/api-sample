@@ -77,7 +77,7 @@ jobs:
       # Dockerのコンテナイメージをビルド
       - name: Docker Build
         run: |
-          docker build -f Dockerfile -t ${{ env.DOCKER_IMAGE_TAG }} .
+          docker build . -t ${{ env.DOCKER_IMAGE_TAG }}
 
       # Dockleで脆弱性検査を行う
       - name: Run Dockle
