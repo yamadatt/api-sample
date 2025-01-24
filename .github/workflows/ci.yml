@@ -3,7 +3,7 @@ name: backend_ci
 
 # トリガーになる Github イベント
 on:
-  pull_request:
+  push:
     branches:
       - main
   # 無くても良い（手動実行したい人だけ残す）
