@@ -61,11 +61,10 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           go_version: 1.23
-          # reviewdog の動作モードの指定
-          reporter: github-pr-review
-          # Github Status へのレポートレベルの指定
-          level: warning
-          workdir: backend/
+          # # reviewdog の動作モードの指定
+          # reporter: github-pr-review
+          # # Github Status へのレポートレベルの指定
+          # level: warning
           golangci_lint_flags: "--enable-all --exclude-use-default=false"
 
   backend_build_check:
