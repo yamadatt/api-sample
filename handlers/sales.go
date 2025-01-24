@@ -48,6 +48,10 @@ func RegisterSalesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	err = database.InitDB("mydb.db")
+	if err != nil {
+		log.Fatal(err)
+	}
 	stock.Amount -= sale.Amount
 	err = stock.Register()
 	if err != nil {
