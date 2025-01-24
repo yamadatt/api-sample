@@ -2,13 +2,42 @@
 
 golangのAPIサンプル。
 
-簡単なAPIをサンプル的ほしいというリクエストに対応するために作った。
-
 在庫を登録して、売上を上げる。売上を上げる際には、在庫から引き当てる。というような処理を実装している。
 
 golangで実装しており、ポート8080で動作する。
 
-後半に使い方のサンプルコマンドを載せている。
+使い方のサンプルコマンドは下の方にある。
+
+- [このリポジトリは？](#このリポジトリは)
+  - [API Documentation](#api-documentation)
+    - [Register Stock](#register-stock)
+      - [Endpoint](#endpoint)
+      - [Request Parameters](#request-parameters)
+      - [Example Request](#example-request)
+      - [Example Response](#example-response)
+    - [Check Stock](#check-stock)
+      - [Endpoint](#endpoint-1)
+      - [Request Parameters](#request-parameters-1)
+      - [Example Request (with name)](#example-request-with-name)
+      - [Example Response (with name)](#example-response-with-name)
+      - [Example Request (without name)](#example-request-without-name)
+      - [Example Response (without name)](#example-response-without-name)
+    - [Register Sales](#register-sales)
+      - [Endpoint](#endpoint-2)
+      - [Request Parameters](#request-parameters-2)
+      - [Example Request](#example-request-1)
+      - [Example Response](#example-response-1)
+    - [Truncate Stocks and Sales Tables](#truncate-stocks-and-sales-tables)
+      - [Endpoint](#endpoint-3)
+      - [Example Response](#example-response-2)
+  - [使用例](#使用例)
+    - [登録](#登録)
+    - [在庫チェック](#在庫チェック)
+    - [売り上げる](#売り上げる)
+      - [単価なし](#単価なし)
+      - [単価あり](#単価あり)
+    - [売上チェック](#売上チェック)
+    - [削除](#削除)
 
 
 
