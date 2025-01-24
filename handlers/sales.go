@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"api-sample/database"
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -26,6 +27,8 @@ func RegisterSalesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	fmt.Println("debug:Registering sale:", sale.Name)
+
 	if sale.Amount == 0 {
 		sale.Amount = 1
 	}
@@ -45,7 +48,7 @@ func RegisterSalesHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if stock.Amount < sale.Amount {
-		http.Error(w, "insufficient stock", http.StatusBadRequest)
+		http.Error(w, "stockが不足しているよ！！", http.StatusBadRequest)
 		return
 	}
 
@@ -61,9 +64,26 @@ func RegisterSalesHandler(w http.ResponseWriter, r *http.Request) {
 		totalPrice = float64(sale.Amount) * sale.Price
 	}
 
-	query := `INSERT INTO sales (name, amount, total_price) VALUES (?, ?, ?)`
+	var existingSale struct {
+		TotalPrice float64 `json:"total_price"`
+	}
+
+	query := `SELECT total_price FROM sales WHERE name = ?`
+	err = db.QueryRow(query, sale.Name).Scan(&existingSale.TotalPrice)
+	if err != nil && err != sql.ErrNoRows {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	totalPrice += existingSale.TotalPrice
+
+	query = `INSERT INTO sales (name, amount, total_price) VALUES (?, ?, ?)
+			 ON CONFLICT(name) DO UPDATE SET amount = amount + excluded.amount, total_price = total_price + excluded.total_price`
 	_, err = db.Exec(query, sale.Name, sale.Amount, totalPrice)
+
+	fmt.Println("debug:Sale registered successfully??")
 	if err != nil {
+		fmt.Print("debug:Failed to register sale:", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

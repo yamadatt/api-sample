@@ -107,30 +107,6 @@ golangのAPIサンプル
 }
 ```
 
-### Check Sales
-
-#### Endpoint
-- **HTTP Method:** GET
-- **Request URI:** /v1/sales
-
-#### Example Response
-- **HTTP Status Code:** 200 OK
-- **Response Body:**
-```json
-[
-  {
-    "name": "Product A",
-    "amount": 2,
-    "total_price": 100.0
-  },
-  {
-    "name": "Product B",
-    "amount": 1,
-    "total_price": 50.0
-  }
-]
-```
-
 ## example
 
 登録
@@ -140,3 +116,17 @@ curl -v -d '{"name": "product1","amount": 100}' -H 'Content-Type: application/js
 在庫チェック
 
 curl http://192.168.1.78:8080/v1/stocks/product1
+
+売り上げる
+
+単価なし
+
+curl -v -d '{"name": "product1","amount": 4}' -H 'Content-Type: application/json' http://192.168.1.78:8080/v1/sales
+
+単価あり
+
+curl -v -d '{"name": "product1","amount": 4,"price": 2000}' -H 'Content-Type: application/json' http://192.168.1.78:8080/v1/sales
+
+売上チェック
+
+curl http://192.168.1.78:8080/v1/sales

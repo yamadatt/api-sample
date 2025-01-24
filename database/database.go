@@ -39,7 +39,7 @@ func InitDB(dataSourceName string) (*sql.DB, error) {
 	query = `
 	CREATE TABLE IF NOT EXISTS sales (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		name TEXT NOT NULL,
+		name TEXT NOT NULL UNIQUE,
 		amount INTEGER NOT NULL,
 		total_price REAL NOT NULL
 	)`
@@ -112,7 +112,8 @@ func UpdateStock(stock *Stock) error {
 }
 
 func GetAllSales() ([]map[string]interface{}, error) {
-	query := `SELECT name, amount, ROUND(total_price, 2) as total_price FROM sales`
+	// query := `SELECT name, amount, ROUND(total_price, 2) as total_price FROM sales`
+	query := `SELECT SUM(total_price) as total_sales FROM sales`
 	rows, err := db.Query(query)
 	if err != nil {
 		return nil, fmt.Errorf("failed to retrieve sales: %v", err)
@@ -121,16 +122,17 @@ func GetAllSales() ([]map[string]interface{}, error) {
 
 	var sales []map[string]interface{}
 	for rows.Next() {
-		var name string
-		var amount int
+		// var name string
+		// var amount int
 		var totalPrice float64
-		err := rows.Scan(&name, &amount, &totalPrice)
+		// err := rows.Scan(&name, &amount, &totalPrice)
+		err := rows.Scan(&totalPrice)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan sale: %v", err)
 		}
 		sale := map[string]interface{}{
-			"name":        name,
-			"amount":      amount,
+			// "name":        name,
+			// "amount":      amount,
 			"total_price": totalPrice,
 		}
 		sales = append(sales, sale)
