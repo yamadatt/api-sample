@@ -37,8 +37,9 @@ func RegisterSalesHandler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("debug:Registering sale:", sale.Name)
 
-	if sale.Amount == 0 {
-		sale.Amount = 1
+	if sale.Amount <= 0 {
+		http.Error(w, `{"message": "ERROR"}`, http.StatusBadRequest)
+		return
 	}
 
 	fmt.Println("debug:Registering sale:", sale)

@@ -32,8 +32,9 @@ func RegisterStockHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if stock.Amount == 0 {
-		stock.Amount = 1
+	if stock.Amount <= 0 {
+		http.Error(w, `{"message": "ERROR"}`, http.StatusBadRequest)
+		return
 	}
 
 	db, err := database.InitDB("mydb.db")
