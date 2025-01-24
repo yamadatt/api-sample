@@ -31,12 +31,12 @@ func RegisterStockHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("debug:Registering stock:", stock)
 
 	//dbのオープンとクローズをここで行う
-	//dbのオープンとクローズをここで行う
-	//dbのオープンとクローズをここで行う
-	err = database.InitDB("mydb.db")
+
+	db, err := database.InitDB("mydb.db")
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer db.Close()
 
 	err = stock.Register()
 	if err != nil {
@@ -56,10 +56,11 @@ func GetStockHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	name := vars["name"]
 
-	err := database.InitDB("mydb.db")
+	db, err := database.InitDB("mydb.db")
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer db.Close()
 
 	if name != "" {
 		stock, err := database.GetStockByName(name)

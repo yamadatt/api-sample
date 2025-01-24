@@ -15,13 +15,13 @@ type Stock struct {
 
 var db *sql.DB
 
-func InitDB(dataSourceName string) error {
+func InitDB(dataSourceName string) (*sql.DB, error) {
 	fmt.Println("debug:InitDB", dataSourceName)
 
 	var err error
 	db, err = sql.Open("sqlite3", dataSourceName)
 	if err != nil {
-		return fmt.Errorf("failed to connect to database: %v", err)
+		return nil, fmt.Errorf("failed to connect to database: %v", err)
 	}
 
 	query := `
@@ -33,7 +33,7 @@ func InitDB(dataSourceName string) error {
 
 	_, err = db.Exec(query)
 	if err != nil {
-		return fmt.Errorf("failed to create table: %v", err)
+		return nil, fmt.Errorf("failed to create table: %v", err)
 	}
 
 	query = `
@@ -46,12 +46,12 @@ func InitDB(dataSourceName string) error {
 
 	_, err = db.Exec(query)
 	if err != nil {
-		return fmt.Errorf("failed to create table: %v", err)
+		return nil, fmt.Errorf("failed to create table: %v", err)
 	}
 
 	fmt.Println("debug:stocks and sales exist", dataSourceName)
 
-	return nil
+	return db, nil
 }
 
 func InsertStock(name string, amount int) error {
@@ -99,4 +99,14 @@ func GetAllStocks() ([]Stock, error) {
 	}
 
 	return stocks, nil
+}
+
+func UpdateStock(stock *Stock) error {
+	query := `UPDATE stocks SET amount = ? WHERE name = ?`
+	_, err := db.Exec(query, stock.Amount, stock.Name)
+	if err != nil {
+		return fmt.Errorf("failed to update stock: %v", err)
+	}
+
+	return nil
 }

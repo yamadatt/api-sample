@@ -32,10 +32,11 @@ func RegisterSalesHandler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("debug:Registering sale:", sale)
 
-	err = database.InitDB("mydb.db")
+	db, err := database.InitDB("mydb.db")
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer db.Close()
 
 	stock, err := database.GetStockByName(sale.Name)
 	if err != nil {
@@ -48,12 +49,8 @@ func RegisterSalesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = database.InitDB("mydb.db")
-	if err != nil {
-		log.Fatal(err)
-	}
 	stock.Amount -= sale.Amount
-	err = stock.Register()
+	err = database.UpdateStock(stock)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
