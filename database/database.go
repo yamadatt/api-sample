@@ -110,3 +110,31 @@ func UpdateStock(stock *Stock) error {
 
 	return nil
 }
+
+func GetAllSales() ([]map[string]interface{}, error) {
+	query := `SELECT name, amount, ROUND(total_price, 2) as total_price FROM sales`
+	rows, err := db.Query(query)
+	if err != nil {
+		return nil, fmt.Errorf("failed to retrieve sales: %v", err)
+	}
+	defer rows.Close()
+
+	var sales []map[string]interface{}
+	for rows.Next() {
+		var name string
+		var amount int
+		var totalPrice float64
+		err := rows.Scan(&name, &amount, &totalPrice)
+		if err != nil {
+			return nil, fmt.Errorf("failed to scan sale: %v", err)
+		}
+		sale := map[string]interface{}{
+			"name":        name,
+			"amount":      amount,
+			"total_price": totalPrice,
+		}
+		sales = append(sales, sale)
+	}
+
+	return sales, nil
+}

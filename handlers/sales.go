@@ -76,3 +76,20 @@ func RegisterSalesHandler(w http.ResponseWriter, r *http.Request) {
 		"totalPrice": totalPrice,
 	})
 }
+
+func GetSalesHandler(w http.ResponseWriter, r *http.Request) {
+	db, err := database.InitDB("mydb.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	sales, err := database.GetAllSales()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(sales)
+}
