@@ -2,7 +2,7 @@ package tests
 
 import (
 	"api-sample/database"
-	"database/sql"
+
 	"testing"
 
 	"github.com/stretchr/testify/assert"

@@ -31,9 +31,9 @@ jobs:
 
         # Go の実行環境 Setup
       - name: Go Setup
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
-          go-version: 1.21
+          go-version: 1.23
 
       # テストの実行
       - name: Run Test
@@ -60,20 +60,20 @@ jobs:
         uses: reviewdog/action-golangci-lint@v2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          go_version: 1.21
+          go_version: 1.23
           # reviewdog の動作モードの指定
           reporter: github-pr-review
           # Github Status へのレポートレベルの指定
           level: warning
           workdir: backend/
-          golangci_lint_flags: "--config=.golangci.yml"
+          golangci_lint_flags: "--enable-all --exclude-use-default=false"
 
   backend_build_check:
     runs-on: ubuntu-latest
     steps:
       # リポジトリからソースコードの取得
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Dockerのコンテナイメージをビルド
       - name: Docker Build
