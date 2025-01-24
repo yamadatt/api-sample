@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"regexp"
+	"strconv"
 )
 
 func RegisterSalesHandler(w http.ResponseWriter, r *http.Request) {
@@ -38,6 +39,12 @@ func RegisterSalesHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("debug:Registering sale:", sale.Name)
 
 	if sale.Amount <= 0 {
+		http.Error(w, `{"message": "ERROR"}`, http.StatusBadRequest)
+		return
+	}
+
+	// Check if amount is a decimal value
+	if _, err := strconv.ParseFloat(fmt.Sprintf("%d", sale.Amount), 64); err != nil {
 		http.Error(w, `{"message": "ERROR"}`, http.StatusBadRequest)
 		return
 	}
