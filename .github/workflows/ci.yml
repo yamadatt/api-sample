@@ -15,15 +15,15 @@ env:
 
 # デフォルトの作業ディレクトリ変更
 # ルート直下の場合は不要
-defaults:
-  run:
-    working-directory: backend
+# defaults:
+#   run:
+#     working-directory: backend
 
 # ジョブ定義
 jobs:
   # ジョブ名
   backend_test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       # リポジトリからソースコードの取得
       - name: Checkout Repository
@@ -44,7 +44,7 @@ jobs:
         uses: k1LoW/octocov-action@v0
 
   backend_lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     # GITHUB_TOKEN への権限設定
     permissions:
       checks: write
