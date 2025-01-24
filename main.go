@@ -14,5 +14,6 @@ func main() {
 	r.HandleFunc("/v1/stocks/{name}", handlers.GetStockHandler).Methods("GET")
 	r.HandleFunc("/v1/sales", handlers.RegisterSalesHandler).Methods("POST")
 	r.HandleFunc("/v1/sales", handlers.GetSalesHandler).Methods("GET")
+	r.HandleFunc("/v1/stocks", handlers.DeleteStocksHandler).Methods("DELETE")
 	http.ListenAndServe(":8080", r)
 }

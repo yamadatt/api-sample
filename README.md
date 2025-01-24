@@ -107,6 +107,21 @@ golangのAPIサンプル
 }
 ```
 
+### Truncate Stocks and Sales Tables
+
+#### Endpoint
+- **HTTP Method:** DELETE
+- **Request URI:** /v1/stocks
+
+#### Example Response
+- **HTTP Status Code:** 200 OK
+- **Response Body:**
+```json
+{
+  "message": "Stocks and sales tables truncated successfully"
+}
+```
+
 ## example
 
 登録
