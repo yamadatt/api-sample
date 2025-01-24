@@ -35,6 +35,31 @@ func TestRegisterStockHandler(t *testing.T) {
 	assert.Equal(t, float64(10), response["product"].(map[string]interface{})["amount"])
 }
 
+func TestRegisterStockHandler_InvalidName(t *testing.T) {
+	invalidNames := []string{"", "ProductA123", "Product@!"}
+
+	for _, name := range invalidNames {
+		reqBody := []byte(`{"name": "` + name + `", "amount": 10}`)
+		req, err := http.NewRequest("POST", "/v1/stocks", bytes.NewBuffer(reqBody))
+		if err != nil {
+			t.Fatal(err)
+		}
+		rr := httptest.NewRecorder()
+		handler := http.HandlerFunc(handlers.RegisterStockHandler)
+		handler.ServeHTTP(rr, req)
+
+		assert.Equal(t, http.StatusBadRequest, rr.Code)
+
+		var response map[string]interface{}
+		err = json.NewDecoder(rr.Body).Decode(&response)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		assert.Equal(t, "ERROR", response["message"])
+	}
+}
+
 func TestGetStockHandler(t *testing.T) {
 	req, err := http.NewRequest("GET", "/v1/stocks/Product A", nil)
 	if err != nil {
@@ -79,6 +104,31 @@ func TestRegisterSalesHandler(t *testing.T) {
 	assert.Equal(t, "Product A", response["product"])
 	assert.Equal(t, float64(2), response["amount"])
 	assert.Equal(t, float64(100), response["totalPrice"])
+}
+
+func TestRegisterSalesHandler_InvalidName(t *testing.T) {
+	invalidNames := []string{"", "ProductA123", "Product@!"}
+
+	for _, name := range invalidNames {
+		reqBody := []byte(`{"name": "` + name + `", "amount": 2, "price": 50.0}`)
+		req, err := http.NewRequest("POST", "/v1/sales", bytes.NewBuffer(reqBody))
+		if err != nil {
+			t.Fatal(err)
+		}
+		rr := httptest.NewRecorder()
+		handler := http.HandlerFunc(handlers.RegisterSalesHandler)
+		handler.ServeHTTP(rr, req)
+
+		assert.Equal(t, http.StatusBadRequest, rr.Code)
+
+		var response map[string]interface{}
+		err = json.NewDecoder(rr.Body).Decode(&response)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		assert.Equal(t, "ERROR", response["message"])
+	}
 }
 
 func TestGetSalesHandler(t *testing.T) {

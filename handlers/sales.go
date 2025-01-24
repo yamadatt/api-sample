@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"regexp"
 )
 
 func RegisterSalesHandler(w http.ResponseWriter, r *http.Request) {
@@ -24,6 +25,13 @@ func RegisterSalesHandler(w http.ResponseWriter, r *http.Request) {
 
 	if sale.Name == "" {
 		http.Error(w, "name is required", http.StatusBadRequest)
+		return
+	}
+
+	// Validate name field
+	isValidName := regexp.MustCompile(`^[a-zA-Z0-9]{1,8}$`).MatchString
+	if !isValidName(sale.Name) {
+		http.Error(w, `{"message": "ERROR"}`, http.StatusBadRequest)
 		return
 	}
 
