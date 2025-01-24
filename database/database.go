@@ -140,3 +140,19 @@ func GetAllSales() ([]map[string]interface{}, error) {
 
 	return sales, nil
 }
+
+func TruncateTables() error {
+	query := `DELETE FROM stocks`
+	_, err := db.Exec(query)
+	if err != nil {
+		return fmt.Errorf("failed to truncate stocks table: %v", err)
+	}
+
+	query = `DELETE FROM sales`
+	_, err = db.Exec(query)
+	if err != nil {
+		return fmt.Errorf("failed to truncate sales table: %v", err)
+	}
+
+	return nil
+}

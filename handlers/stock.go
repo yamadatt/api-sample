@@ -78,3 +78,22 @@ func GetStockHandler(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(stocks)
 	}
 }
+
+func DeleteStocksHandler(w http.ResponseWriter, r *http.Request) {
+	db, err := database.InitDB("mydb.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	err = database.TruncateTables()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"message": "Stocks and sales tables truncated successfully",
+	})
+}
