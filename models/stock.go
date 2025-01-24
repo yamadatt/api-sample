@@ -3,6 +3,7 @@ package models
 import (
 	"database/sql"
 	"fmt"
+
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -12,11 +13,13 @@ type Stock struct {
 }
 
 func (s *Stock) Register() error {
-	db, err := sql.Open("sqlite3", "./stock.db")
+	db, err := sql.Open("sqlite3", "./mydb")
 	if err != nil {
 		return fmt.Errorf("failed to connect to database: %v", err)
 	}
 	defer db.Close()
+
+	fmt.Println("debug:Connected to database")
 
 	query := `INSERT INTO stocks (name, amount) VALUES (?, ?)`
 	_, err = db.Exec(query, s.Name, s.Amount)

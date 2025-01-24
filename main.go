@@ -1,10 +1,10 @@
 package main
 
 import (
-	"encoding/json"
+	"api-sample/handlers"
 	"net/http"
+
 	"github.com/gorilla/mux"
-	"yamadatt/api-sample/handlers"
 )
 
 func main() {

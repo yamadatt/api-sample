@@ -3,12 +3,15 @@ package database
 import (
 	"database/sql"
 	"fmt"
+
 	_ "github.com/mattn/go-sqlite3"
 )
 
 var db *sql.DB
 
 func InitDB(dataSourceName string) error {
+	fmt.Println("debug:InitDB", dataSourceName)
+
 	var err error
 	db, err = sql.Open("sqlite3", dataSourceName)
 	if err != nil {
@@ -25,6 +28,8 @@ func InitDB(dataSourceName string) error {
 	if err != nil {
 		return fmt.Errorf("failed to create table: %v", err)
 	}
+
+	fmt.Println("debug:stocks exist", dataSourceName)
 
 	return nil
 }

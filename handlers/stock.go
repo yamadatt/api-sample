@@ -1,9 +1,12 @@
 package handlers
 
 import (
+	"api-sample/database"
+	"api-sample/models"
 	"encoding/json"
+	"fmt"
+	"log"
 	"net/http"
-	"yamadatt/api-sample/models"
 )
 
 func RegisterStockHandler(w http.ResponseWriter, r *http.Request) {
@@ -23,8 +26,19 @@ func RegisterStockHandler(w http.ResponseWriter, r *http.Request) {
 		stock.Amount = 1
 	}
 
+	fmt.Println("debug:Registering stock:", stock)
+
+	//dbのオープンとクローズをここで行う
+	//dbのオープンとクローズをここで行う
+	//dbのオープンとクローズをここで行う
+	err = database.InitDB("mydb.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	err = stock.Register()
 	if err != nil {
+		fmt.Println("debug:Failed to register stock:", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
